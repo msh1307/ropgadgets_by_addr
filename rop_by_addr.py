@@ -50,10 +50,10 @@ def search(s,sv):
     while True:
         print("Search > ",end='')
         v = input()
-        print("limit : ",end='')
         if v == 'q':
             break
         elif v.startswith('['):
+            print("limit : ",end='')
             limit = parse_int(input())
             arr = eval(v)
             res = []
@@ -92,6 +92,7 @@ def search(s,sv):
                 else:
                     print((res[i][1]))
         else:
+            print("limit : ",end='')
             limit = parse_int(input())
             for i in s:
                 if v in i:
