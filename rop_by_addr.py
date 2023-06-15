@@ -83,6 +83,8 @@ def search(s,sv):
             print("show brief (y/n) : ",end= '')
             v = input() == 'y'
             res.sort()
+            if len(res) < limit:
+                limit = len(res)
             for i in range(limit):
                 if v:
                     x= brief((res[i][1]),arr)
