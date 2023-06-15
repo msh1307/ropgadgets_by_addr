@@ -3,7 +3,7 @@ from capstone import *
 from tqdm import tqdm
 import pickle
 
-default = "./results.rop"
+default = "./res.rop"
 def brief(x,keywords):
     m = 0x7ffffffff
     M = -1
@@ -125,7 +125,7 @@ if __name__ == '__main__':
             print("loaded successfully")
             search(s,False)
         except FileNotFoundError:
-            print("'results.txt' not found")
+            print(f"'{default}' not found")
     else:
         inf = gdb.inferiors()[0]
         print("segment address : ",end='')
