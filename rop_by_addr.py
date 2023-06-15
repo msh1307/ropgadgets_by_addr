@@ -121,24 +121,28 @@ if __name__ == '__main__':
             print(f"reading memory {res[0]} ~ {res[1]} (0x{res[3]} bytes)")
             mem = (inf.read_memory(int(res[0],16),int(res[3],16))).tobytes()
             md = Cs(CS_ARCH_X86, CS_MODE_64)
-            gadgets = [b'\xc3',b"\xc2",b'\xcb',b"\xca",b'\xf2\xc3',b"\xf2\xc2",b'\xff',b'\xeb',b'\xe9',b'\xf2\xff',b'\xcd\x80',b"\x0f\x34",b"\x0f\x05",b'\x65\xff\x15\x10\x00\x00\x00']
+            #gadgets = [b'\xc3',b"\xc2",b'\xcb',b"\xca",b'\xf2\xc3',b"\xf2\xc2",b'\xff',b'\xeb',b'\xe9',b'\xf2\xff',b'\xcd\x80',b"\x0f\x34",b"\x0f\x05",b'\x65\xff\x15\x10\x00\x00\x00']
+            gadgets = [b'\xc3',b"\xc2",b'\xcb',b"\xca",b'\xff',b'\xeb',b'\xe9',b'\xf2',b'\xcd',b'\x0f',b'\x65']
             candi = []
-            for i,j in tqdm(enumerate(mem)):
-                if j == gadgets[0][0]:
-                    candi.append(i)
+            print("finding gadgets")
+            for i in tqdm(range(len(mem))):
+                for k in gadgets:
+                    if mem[i] == k[0]:
+                        candi.append(i)
             s = []
             base = int(res[0],16)
             # print("width : ",end='')
             # v = parse_int(input())
             v = 0x20 # width 0x20 by default
-            for j in candi:
+            print("disassembling")
+            for j in tqdm(range(len(candi))):
                 tmp = ''
                 if j-v < 0:
-                    for i in md.disasm(mem[:j+v], v):
-                        tmp += ("%s:\t%s %s\n" %('0x'+hex(i.address + base+j-v).replace('0x','').zfill(16), i.mnemonic, i.op_str))
+                    for i in md.disasm(mem[:candi[j]+v], base):
+                        tmp += ("%s:\t%s %s\n" %('0x'+hex(i.address).replace('0x','').zfill(16), i.mnemonic, i.op_str))
                 else:
-                    for i in md.disasm(mem[j-v:j+v], v):
-                        tmp += ("%s:\t%s %s\n" %('0x'+hex(i.address + base+j-v).replace('0x','').zfill(16), i.mnemonic, i.op_str))
+                    for i in md.disasm(mem[candi[j]-v:candi[j]+v], base+candi[j]-v):
+                        tmp += ("%s:\t%s %s\n" %('0x'+hex(i.address).replace('0x','').zfill(16), i.mnemonic, i.op_str))
                 s.append(tmp)
             search(s,True)
         else:
