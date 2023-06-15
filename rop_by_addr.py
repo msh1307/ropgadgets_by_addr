@@ -155,10 +155,10 @@ if __name__ == '__main__':
                 tmp = ''
                 if j-v < 0:
                     for i in md.disasm(mem[:candi[j]+v], base):
-                        tmp += ("%s:\t%s %s\n" %('0x'+hex(i.address).replace('0x','').zfill(16), i.mnemonic, i.op_str))
+                        tmp += ("%s:\t%s %s\n" %('0x'+hex(i.address).replace('0x','').zfill(16) + ' (+'+ hex(i.address-base)+')', i.mnemonic, i.op_str))
                 else:
                     for i in md.disasm(mem[candi[j]-v:candi[j]+v], base+candi[j]-v):
-                        tmp += ("%s:\t%s %s\n" %('0x'+hex(i.address).replace('0x','').zfill(16), i.mnemonic, i.op_str))
+                        tmp += ("%s:\t%s %s\n" %('0x'+hex(i.address).replace('0x','').zfill(16) + ' (+'+ hex(i.address-base)+')', i.mnemonic, i.op_str))
                 s.append(tmp)
             search(s,True)
         else:
