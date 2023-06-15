@@ -24,9 +24,21 @@ def brief(x,keywords):
     if s and not S:
         return x[:M+Ml+1]
     elif not s and S:
-        return x[m-21:]
+        i = m
+        while True:
+            if x[i] == '\n':
+                i+=1
+                break
+            i-=1
+        return x[i:]
     elif not s and not S:
-        return x[m-21:M+Ml+1]
+        i = m
+        while True:
+            if x[i] == '\n':
+                i+=1
+                break
+            i-=1
+        return x[i:M+Ml+1]
     else:
         return x
     
@@ -87,11 +99,13 @@ def search(s,sv):
                 limit = len(res)
             for i in range(limit):
                 if v:
+                    print()
                     x= brief((res[i][1]),arr)
                     if x == None:
                         continue
                     print(x)
                 else:
+                    print()
                     print((res[i][1]))
         else:
             print("limit : ",end='')
