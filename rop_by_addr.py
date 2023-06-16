@@ -138,7 +138,7 @@ if __name__ == '__main__':
             mem = (inf.read_memory(int(res[0],16),int(res[3],16))).tobytes()
             md = Cs(CS_ARCH_X86, CS_MODE_64)
             #gadgets = [b'\xc3',b"\xc2",b'\xcb',b"\xca",b'\xf2\xc3',b"\xf2\xc2",b'\xff',b'\xeb',b'\xe9',b'\xf2\xff',b'\xcd\x80',b"\x0f\x34",b"\x0f\x05",b'\x65\xff\x15\x10\x00\x00\x00']
-            gadgets = [b'\xc3',b"\xc2",b'\xcb',b"\xca",b'\xff',b'\xeb',b'\xe9',b'\xf2',b'\xcd',b'\x0f',b'\x65']
+            gadgets = [b'\xc3',b"\xc2",b'\xcb',b"\xca",b'\xff',b'\xeb',b'\xe9',b'\xf2',b'\xcd',b'\x0f',b'\x65',b'\x48'] # iretq
             candi = []
             print("finding gadgets")
             for i in tqdm(range(len(mem))):
